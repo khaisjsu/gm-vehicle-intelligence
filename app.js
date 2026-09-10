@@ -50,6 +50,9 @@ async function startDiagnosis(button) {
 
 loadDashboard().catch(() => showToast('Offline mode', 'The dashboard could not reach its data service.'));
 
+fetch('/api/auth/me').then((response) => response.json()).then((data) => { if (data.user) document.querySelector('#userEmail').textContent = data.user.email; }).catch(() => {});
+document.querySelector('#logoutButton').addEventListener('click', async () => { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = '/login'; });
+
 fetch('/api/simulator').then((response) => response.json()).then(renderSimulator).catch(() => {});
 window.setInterval(async () => {
   try {

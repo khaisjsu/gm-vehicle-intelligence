@@ -12,7 +12,9 @@ db.exec("PRAGMA foreign_keys = ON;");
 db.exec(`CREATE TABLE IF NOT EXISTS vehicles (id TEXT PRIMARY KEY, model TEXT NOT NULL, battery REAL NOT NULL, range_miles INTEGER NOT NULL, odometer INTEGER NOT NULL, status TEXT NOT NULL, updated_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS signals (id TEXT PRIMARY KEY, vehicle_id TEXT NOT NULL, title TEXT NOT NULL, priority TEXT NOT NULL, detail TEXT NOT NULL, age TEXT NOT NULL, state TEXT NOT NULL, created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS telemetry (id INTEGER PRIMARY KEY AUTOINCREMENT, vehicle_id TEXT NOT NULL, speed REAL NOT NULL, battery_temp REAL NOT NULL, ambient_temp REAL NOT NULL, state_of_charge REAL NOT NULL, range_miles INTEGER NOT NULL, mode TEXT NOT NULL, event TEXT NOT NULL, recorded_at TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS diagnostic_sessions (id TEXT PRIMARY KEY, vehicle_id TEXT NOT NULL, status TEXT NOT NULL, started_at TEXT NOT NULL);`);
+CREATE TABLE IF NOT EXISTS diagnostic_sessions (id TEXT PRIMARY KEY, vehicle_id TEXT NOT NULL, status TEXT NOT NULL, started_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL, expires_at TEXT NOT NULL, created_at TEXT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);`);
 const now = () => new Date().toISOString();
 if (db.prepare("SELECT COUNT(*) AS count FROM vehicles").get().count === 0) {
   const addVehicle = db.prepare("INSERT INTO vehicles VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -30,3 +32,9 @@ export const recordTelemetry = (s) => { const t = now(); db.prepare("INSERT INTO
 export const startDiagnostic = (vehicleId) => { const session = { id: `DX-${Date.now()}`, vehicleId, startedAt: now(), status: "running" }; db.prepare("INSERT INTO diagnostic_sessions VALUES (?, ?, ?, ?)").run(session.id, session.vehicleId, session.status, session.startedAt); return session; };
 export const markThermalSignal = () => db.prepare("UPDATE signals SET age = 'just now' WHERE id = 'SIG-1042'").run();
 export const getDashboard = () => { const vehicles = getVehicles(); const signals = getSignals(); const simulator = getSimulator(); return { fleet: { health: 98.4, efficiency: 3.8, openSignals: signals.filter((s) => s.state === "open").length, online: vehicles.filter((v) => v.status === "Online").length, trackedVehicles: vehicles.length, lastSync: new Date(simulator.updatedAt).toLocaleTimeString("en-US", { hour12: false }) }, vehicles, signals, simulator, validation: { model: { label: "Battery thermal model", status: "PASS", detail: "Executable requirement · 142 checks" }, virtual: { label: "Virtual integration", status: "PASS", detail: "HPC + zone controller · 38 scenarios" }, release: { label: "Release gate", status: "READY", detail: "Traceability 96% · CI build #1842" } } }; };
+export const findUserByEmail = (email) => db.prepare("SELECT id, email, password_hash AS passwordHash, created_at AS createdAt FROM users WHERE email = ?").get(email.toLowerCase());
+export const createUser = (email, passwordHash) => { const result = db.prepare("INSERT INTO users (email, password_hash, created_at) VALUES (?, ?, ?)").run(email.toLowerCase(), passwordHash, now()); return { id: Number(result.lastInsertRowid), email: email.toLowerCase() }; };
+export const saveSession = (tokenHash, userId, expiresAt) => db.prepare("INSERT INTO sessions (token_hash, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)").run(tokenHash, userId, expiresAt, now());
+export const findSessionUser = (tokenHash) => db.prepare("SELECT users.id, users.email FROM sessions JOIN users ON users.id = sessions.user_id WHERE sessions.token_hash = ? AND sessions.expires_at > ?").get(tokenHash, now());
+export const deleteSession = (tokenHash) => db.prepare("DELETE FROM sessions WHERE token_hash = ?").run(tokenHash);
+export const deleteExpiredSessions = () => db.prepare("DELETE FROM sessions WHERE expires_at <= ?").run(now());
