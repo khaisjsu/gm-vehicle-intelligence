@@ -21,6 +21,7 @@
           <a class="nav-item" href="#vehicles"><span>▣</span> Vehicles <b>12</b></a>
           <a class="nav-item" href="#signals"><span>⌁</span> Live signals <b class="signal-count">3</b></a>
           <a class="nav-item" href="#service"><span>◫</span> Service board <b>07</b></a>
+          <a class="nav-item" href="#validation"><span>⌘</span> Delivery model <b>CI</b></a>
         </nav>
         <div class="sidebar-bottom">
           <div class="field-note"><span class="pulse-dot"></span><span>DATA STREAM<br /><strong>CONNECTED</strong></span></div>
@@ -67,6 +68,17 @@
         <section class="service-panel panel" id="service">
           <div class="panel-head"><div><p class="kicker">MAINTENANCE PIPELINE</p><h3>Service board</h3></div><div class="board-legend"><span><i class="dot red"></i> Needs attention</span><span><i class="dot amber"></i> Scheduled</span><span><i class="dot green"></i> Healthy</span></div></div>
           <div class="board-grid"><div class="board-col"><div class="col-head">TRIAGE <span>01</span></div><div class="job-card high"><div class="job-top"><span class="job-id">V-042 / HV</span><span class="job-more">···</span></div><strong>Battery thermal variance</strong><p>Assigned to M. Alvarez</p><div class="job-footer"><span class="job-tag">DIAGNOSTICS</span><span>Due today</span></div></div></div><div class="board-col"><div class="col-head">SCHEDULED <span>02</span></div><div class="job-card"><div class="job-top"><span class="job-id">V-017 / ADAS</span><span class="job-more">···</span></div><strong>Radar calibration</strong><p>Service center · Denver North</p><div class="job-footer"><span class="job-tag amber-tag">CALIBRATION</span><span>12 Sep</span></div></div><div class="job-card"><div class="job-top"><span class="job-id">V-008 / TIRE</span><span class="job-more">···</span></div><strong>Pressure inspection</strong><p>Assigned to J. Miller</p><div class="job-footer"><span class="job-tag amber-tag">INSPECTION</span><span>13 Sep</span></div></div></div><div class="board-col"><div class="col-head">RESOLVED <span>04</span></div><div class="job-card resolved"><div class="job-top"><span class="job-id">V-031 / OTA</span><span>✓</span></div><strong>Infotainment update</strong><p>Completed by A. Chen</p><div class="job-footer"><span class="job-tag green-tag">OTA UPDATE</span><span>Yesterday</span></div></div></div></div>
+        </section>
+        <section class="validation-panel panel" id="validation">
+          <div class="panel-head"><div><p class="kicker">MODEL-BASED DELIVERY</p><h3>From model to vehicle</h3></div><span class="status-chip"><i></i> Pipeline healthy</span></div>
+          <div class="validation-flow">
+            <article class="validation-step"><div class="step-index">01</div><div><strong>Model</strong><p>Battery thermal model</p><small>Executable requirements</small></div><span class="check">✓</span></article>
+            <span class="flow-arrow">→</span>
+            <article class="validation-step"><div class="step-index">02</div><div><strong>Verify</strong><p>Virtual integration</p><small>38 scenarios passed</small></div><span class="check">✓</span></article>
+            <span class="flow-arrow">→</span>
+            <article class="validation-step"><div class="step-index">03</div><div><strong>Release</strong><p>Service update gate</p><small>CI build #1842 ready</small></div><span class="check">✓</span></article>
+          </div>
+          <div class="validation-note"><span>TRACEABILITY</span><strong>96%</strong><p>Requirements mapped to tests, models, and the active vehicle service.</p><button class="text-button" id="refreshValidation">Refresh pipeline <span>↻</span></button></div>
         </section>
         <footer><span>VECTOR / VEHICLE INTELLIGENCE</span><span>BUILT FOR SAFER MOTION</span><span>v0.8.4 · INTERNAL CONCEPT</span></footer>
       </main>
