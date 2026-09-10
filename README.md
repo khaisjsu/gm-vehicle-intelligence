@@ -35,4 +35,6 @@ This repository includes `render.yaml` for deployment on Render. Create a new We
 
 The `/api/health` endpoint can be used as a deployment health check. The local SQLite database is suitable for a portfolio prototype; use a managed database or persistent disk before relying on the app for production records.
 
+GitHub Actions runs the database tests on pushes and pull requests. Render is configured to deploy after CI checks pass.
+
 The dashboard is protected by registration, salted scrypt password hashing, server-side sessions, generic login errors, logout, and login rate limiting. See `docs/AUTHENTICATION.md` for the security design.
