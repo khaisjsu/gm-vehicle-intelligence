@@ -7,6 +7,23 @@ function showToast(title, detail) {
   window.setTimeout(() => toast.classList.remove('show'), 4200);
 }
 
+function renderSimulator(sim) {
+  document.querySelector('#simStatus').textContent = sim.mode;
+  document.querySelector('#simSpeed').textContent = String(sim.speed).padStart(2, '0');
+  document.querySelector('#simTemp').textContent = Number(sim.batteryTemp).toFixed(1);
+  document.querySelector('#simSoc').textContent = Math.round(sim.stateOfCharge);
+  document.querySelector('#simRange').textContent = sim.range;
+  document.querySelector('#simEvent').textContent = `${sim.lastEvent} · tick ${sim.tick}`;
+  const status = document.querySelector('.simulator-status');
+  status.classList.toggle('sim-hot', sim.batteryTemp > 42);
+}
+
+async function simulatorAction(action) {
+  const response = await fetch(`/api/simulator/${action}`, { method: 'POST' });
+  if (!response.ok) throw new Error('Simulator unavailable');
+  renderSimulator(await response.json());
+}
+
 async function loadDashboard() {
   const response = await fetch('/api/dashboard');
   if (!response.ok) throw new Error('Dashboard data unavailable');
@@ -33,6 +50,14 @@ async function startDiagnosis(button) {
 
 loadDashboard().catch(() => showToast('Offline mode', 'The dashboard could not reach its data service.'));
 
+fetch('/api/simulator').then((response) => response.json()).then(renderSimulator).catch(() => {});
+window.setInterval(async () => {
+  try {
+    const response = await fetch('/api/simulator/tick', { method: 'POST' });
+    renderSimulator(await response.json());
+  } catch { /* Keep the last telemetry state visible during reconnects. */ }
+}, 1500);
+
 document.querySelectorAll('.diagnose-button').forEach((button) => {
   button.addEventListener('click', () => startDiagnosis(button).catch(() => showToast('Diagnostic error', 'Please try the session again.')));
 });
@@ -50,4 +75,10 @@ document.querySelector('#refreshValidation').addEventListener('click', async (ev
   button.disabled = false;
   button.innerHTML = 'Pipeline verified <span>✓</span>';
   showToast('Verification complete', 'Model, virtual tests, and release gate are aligned.');
+});
+
+document.querySelector('#startSim').addEventListener('click', () => simulatorAction('start').catch(() => showToast('Simulator error', 'Could not start the drive cycle.')));
+document.querySelector('#stopSim').addEventListener('click', () => simulatorAction('stop').catch(() => showToast('Simulator error', 'Could not pause the drive cycle.')));
+document.querySelector('#thermalEvent').addEventListener('click', () => {
+  simulatorAction('thermal-event').then(() => showToast('Thermal event injected', 'V-042 is now reporting a controlled battery variance.')).catch(() => showToast('Simulator error', 'Could not inject the event.'));
 });

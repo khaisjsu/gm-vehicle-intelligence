@@ -30,6 +30,18 @@ const state = {
     virtual: { label: "Virtual integration", status: "PASS", detail: "HPC + zone controller · 38 scenarios" },
     release: { label: "Release gate", status: "READY", detail: "Traceability 96% · CI build #1842" },
   },
+  simulator: {
+    running: false,
+    tick: 0,
+    batteryTemp: 31.4,
+    ambientTemp: 22.0,
+    speed: 0,
+    stateOfCharge: 82,
+    range: 284,
+    mode: "Parked",
+    lastEvent: "Waiting for simulator",
+    updatedAt: new Date().toISOString(),
+  },
 };
 
 const json = (res, status, body) => {
@@ -39,7 +51,48 @@ const json = (res, status, body) => {
 
 async function handleApi(req, res, url) {
   if (req.method === "GET" && url.pathname === "/api/dashboard") {
-    return json(res, 200, { fleet: state.fleet, vehicles: state.vehicles, signals: state.signals, validation: state.validation });
+    return json(res, 200, { fleet: state.fleet, vehicles: state.vehicles, signals: state.signals, validation: state.validation, simulator: state.simulator });
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/simulator") return json(res, 200, state.simulator);
+
+  if (req.method === "POST" && url.pathname === "/api/simulator/start") {
+    state.simulator.running = true;
+    state.simulator.mode = "Drive cycle";
+    state.simulator.lastEvent = "Drive cycle started";
+    return json(res, 200, state.simulator);
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/simulator/stop") {
+    state.simulator.running = false;
+    state.simulator.speed = 0;
+    state.simulator.mode = "Parked";
+    state.simulator.lastEvent = "Drive cycle paused";
+    return json(res, 200, state.simulator);
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/simulator/thermal-event") {
+    state.simulator.running = true;
+    state.simulator.mode = "Thermal event injected";
+    state.simulator.batteryTemp = 47.8;
+    state.simulator.lastEvent = "Thermal variance injected into cell group 04";
+    state.signals[0].age = "just now";
+    return json(res, 200, state.simulator);
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/simulator/tick") {
+    const sim = state.simulator;
+    sim.tick += 1;
+    if (sim.running) {
+      sim.speed = Math.round(38 + Math.sin(sim.tick / 2) * 12);
+      sim.batteryTemp = Math.max(29, Math.min(48, sim.batteryTemp + (Math.random() - 0.52) * 1.8));
+      sim.stateOfCharge = Math.max(12, sim.stateOfCharge - 0.03);
+      sim.range = Math.round(sim.stateOfCharge * 3.45);
+      sim.lastEvent = sim.batteryTemp > 42 ? "Thermal threshold exceeded" : "Telemetry heartbeat received";
+      state.fleet.lastSync = new Date().toLocaleTimeString("en-US", { hour12: false });
+    }
+    sim.updatedAt = new Date().toISOString();
+    return json(res, 200, sim);
   }
 
   if (req.method === "GET" && url.pathname.startsWith("/api/vehicles/")) {

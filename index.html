@@ -47,6 +47,14 @@
           <article class="metric-card alert-card"><span class="metric-label">OPEN SIGNALS</span><strong>03</strong><div class="trend warning">● 1 high priority <small>needs review</small></div><div class="signal-pills"><span class="pill red"></span><span class="pill amber"></span><span class="pill amber"></span><span class="pill green"></span><span class="pill green"></span></div></article>
         </section>
 
+        <section class="simulator-panel panel" id="simulator">
+          <div class="panel-head"><div><p class="kicker">VIRTUAL VEHICLE / V-042</p><h3>Simulation control room</h3></div><span class="status-chip simulator-status"><i></i> <span id="simStatus">Parked</span></span></div>
+          <div class="simulator-grid">
+            <div class="sim-telemetry"><div class="sim-readout"><span>SPEED</span><strong id="simSpeed">00</strong><small>MPH</small></div><div class="sim-readout"><span>BATTERY TEMP</span><strong id="simTemp">31.4</strong><small>°C</small></div><div class="sim-readout"><span>STATE OF CHARGE</span><strong id="simSoc">82</strong><small>%</small></div><div class="sim-readout"><span>EST. RANGE</span><strong id="simRange">284</strong><small>MI</small></div></div>
+            <div class="sim-actions"><p>Send a controlled drive cycle through the same telemetry boundary as a real connected vehicle.</p><div class="sim-buttons"><button class="sim-button primary" id="startSim">Start drive cycle <span>▶</span></button><button class="sim-button" id="stopSim">Pause <span>Ⅱ</span></button><button class="sim-button thermal" id="thermalEvent">Inject thermal event <span>⚠</span></button></div><small id="simEvent">Waiting for simulator</small></div>
+          </div>
+        </section>
+
         <section class="content-grid">
           <div class="panel signals-panel" id="signals">
             <div class="panel-head"><div><p class="kicker">LIVE TELEMETRY</p><h3>Active signals</h3></div><button class="text-button">View all <span>↗</span></button></div>
