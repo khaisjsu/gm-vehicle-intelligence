@@ -26,3 +26,5 @@ The frontend fetches dashboard data from `GET /api/dashboard` and starts a live 
 The dashboard also includes a model-based delivery lane inspired by the supplied MathWorks white paper. It represents the shift-left workflow from executable model, through virtual integration tests, to a traceable CI release gate. See `docs/MODEL_BASED_DESIGN.md` for the mapping.
 
 The dashboard also includes a controllable simulated Silverado EV. Start and pause a drive cycle, watch telemetry change live, inject a battery thermal event, and start a diagnostic session. See `docs/SIMULATOR.md` for the complete architecture and API details.
+
+Vehicle and telemetry data are persisted in SQLite. See `docs/DATABASE.md` for the schema and persistence behavior.
