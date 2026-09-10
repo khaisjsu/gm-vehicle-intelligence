@@ -28,3 +28,7 @@ The dashboard also includes a model-based delivery lane inspired by the supplied
 The dashboard also includes a controllable simulated Silverado EV. Start and pause a drive cycle, watch telemetry change live, inject a battery thermal event, and start a diagnostic session. See `docs/SIMULATOR.md` for the complete architecture and API details.
 
 Vehicle and telemetry data are persisted in SQLite. See `docs/DATABASE.md` for the schema and persistence behavior.
+
+## Publish online
+
+This repository includes `render.yaml` for deployment on Render. Create a new Web Service from the GitHub repository, or use Render Blueprint deployment to read the configuration automatically. The service uses `npm install` to build and `npm start` to run the frontend and backend together.
