@@ -7,10 +7,11 @@ import { db, getDashboard, getSimulator, getVehicles, markThermalSignal, recordT
 const root = fileURLToPath(new URL(".", import.meta.url));
 const port = Number(process.env.PORT || 4173);
 let simulator = getSimulator();
-const json = (res, status, body) => { res.writeHead(status, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }); res.end(JSON.stringify(body)); };
+const json = (res, status, body) => { res.writeHead(status, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }); res.end(JSON.stringify(body)); };
 
 async function handleApi(req, res, url) {
   if (req.method === "GET" && url.pathname === "/api/dashboard") return json(res, 200, getDashboard());
+  if (req.method === "GET" && url.pathname === "/api/health") return json(res, 200, { status: "ok", service: "vector", database: "sqlite", timestamp: new Date().toISOString() });
   if (req.method === "GET" && url.pathname === "/api/simulator") return json(res, 200, getSimulator());
   if (req.method === "GET" && url.pathname.startsWith("/api/vehicles/")) { const vehicle = getVehicles().find((item) => item.id === url.pathname.split("/").pop()); return vehicle ? json(res, 200, vehicle) : json(res, 404, { error: "Vehicle not found" }); }
   if (req.method === "POST" && url.pathname.endsWith("/diagnose")) { const vehicleId = url.pathname.split("/")[3]; if (!getVehicles().some((item) => item.id === vehicleId)) return json(res, 404, { error: "Vehicle not found" }); const session = startDiagnostic(vehicleId); return json(res, 201, { session, message: `Diagnostic session started for ${vehicleId}` }); }

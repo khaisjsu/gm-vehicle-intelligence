@@ -21,7 +21,7 @@ npm start
 
 Then open `http://localhost:4173`.
 
-The frontend fetches dashboard data from `GET /api/dashboard` and starts a live diagnostic session through `POST /api/vehicles/:id/diagnose`. The backend stores the in-memory prototype state and can later be replaced with PostgreSQL, SQLite, or a cloud vehicle-data service.
+The frontend fetches dashboard data from `GET /api/dashboard` and starts a live diagnostic session through `POST /api/vehicles/:id/diagnose`. The backend persists vehicle state and telemetry in SQLite.
 
 The dashboard also includes a model-based delivery lane inspired by the supplied MathWorks white paper. It represents the shift-left workflow from executable model, through virtual integration tests, to a traceable CI release gate. See `docs/MODEL_BASED_DESIGN.md` for the mapping.
 
@@ -32,3 +32,5 @@ Vehicle and telemetry data are persisted in SQLite. See `docs/DATABASE.md` for t
 ## Publish online
 
 This repository includes `render.yaml` for deployment on Render. Create a new Web Service from the GitHub repository, or use Render Blueprint deployment to read the configuration automatically. The service uses `npm install` to build and `npm start` to run the frontend and backend together.
+
+The `/api/health` endpoint can be used as a deployment health check. The local SQLite database is suitable for a portfolio prototype; use a managed database or persistent disk before relying on the app for production records.

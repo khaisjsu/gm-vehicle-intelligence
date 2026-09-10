@@ -29,7 +29,7 @@ async function loadDashboard() {
   if (!response.ok) throw new Error('Dashboard data unavailable');
   const data = await response.json();
   document.querySelector('.hero-stat strong').textContent = data.fleet.lastSync;
-  document.querySelector('.hero-stat small').textContent = `${data.fleet.online}/${data.fleet.online} online`;
+  document.querySelector('.hero-stat small').textContent = `${data.fleet.online} tracked online · ${data.fleet.trackedVehicles} vehicles shown`;
   document.querySelector('.metric-card strong').innerHTML = `${data.fleet.health}<span>%</span>`;
   document.querySelector('.alert-card strong').textContent = String(data.fleet.openSignals).padStart(2, '0');
   document.querySelector('.validation-note strong').textContent = '96%';
