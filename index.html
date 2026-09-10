@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071015" />
+    <meta name="description" content="Vector — a vehicle intelligence workspace for safer, smarter fleets." />
+    <title>Vector / Vehicle Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">V</span><span>VECTOR</span></div>
+        <div class="workspace-label">FLEET OPS / 04</div>
+        <nav class="nav" aria-label="Main navigation">
+          <a class="nav-item active" href="#overview"><span>◈</span> Overview <b>01</b></a>
+          <a class="nav-item" href="#vehicles"><span>▣</span> Vehicles <b>12</b></a>
+          <a class="nav-item" href="#signals"><span>⌁</span> Live signals <b class="signal-count">3</b></a>
+          <a class="nav-item" href="#service"><span>◫</span> Service board <b>07</b></a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="field-note"><span class="pulse-dot"></span><span>DATA STREAM<br /><strong>CONNECTED</strong></span></div>
+          <div class="user-card"><div class="avatar">KN</div><div><strong>Khai Nguyen</strong><small>Vehicle Systems</small></div><span>···</span></div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div><p class="kicker">WEDNESDAY / 09 SEP 2026</p><h1>Good morning, Khai.</h1></div>
+          <div class="top-actions"><button class="icon-button" aria-label="Search">⌕</button><button class="icon-button" aria-label="Notifications">◌<i></i></button><button class="outline-button">Export report <span>↗</span></button></div>
+        </header>
+
+        <section class="hero-strip">
+          <div><p class="kicker cyan">SYSTEM STATUS / NOMINAL</p><h2>Fleet health is<br /><em>holding steady.</em></h2><p class="muted hero-copy">12 connected vehicles are reporting. One priority signal needs your attention.</p></div>
+          <div class="hero-stat"><span>LAST SYNC</span><strong>08:42:16</strong><small>Pacific time · 12/12 online</small></div>
+          <div class="hero-orbit"><div class="orbit-ring ring-one"></div><div class="orbit-ring ring-two"></div><div class="orbit-core">98<span>%</span><small>HEALTH</small></div></div>
+        </section>
+
+        <section class="metrics" aria-label="Fleet metrics">
+          <article class="metric-card"><span class="metric-label">FLEET HEALTH</span><strong>98.4<span>%</span></strong><div class="trend positive">↗ 2.1% <small>vs last week</small></div><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="metric-card"><span class="metric-label">ENERGY EFFICIENCY</span><strong>3.8<span> mi/kWh</span></strong><div class="trend positive">↗ 0.4 <small>vs last week</small></div><div class="line-chart"><svg viewBox="0 0 180 45" aria-label="Efficiency trend"><polyline points="0,36 22,33 41,35 60,23 79,29 99,14 120,19 140,8 160,12 180,3" /></svg></div></article>
+          <article class="metric-card alert-card"><span class="metric-label">OPEN SIGNALS</span><strong>03</strong><div class="trend warning">● 1 high priority <small>needs review</small></div><div class="signal-pills"><span class="pill red"></span><span class="pill amber"></span><span class="pill amber"></span><span class="pill green"></span><span class="pill green"></span></div></article>
+        </section>
+
+        <section class="content-grid">
+          <div class="panel signals-panel" id="signals">
+            <div class="panel-head"><div><p class="kicker">LIVE TELEMETRY</p><h3>Active signals</h3></div><button class="text-button">View all <span>↗</span></button></div>
+            <div class="signal-list">
+              <article class="signal-row priority"><div class="severity-dot red"></div><div class="signal-main"><div class="signal-title"><strong>Battery thermal variance</strong><span class="badge red-badge">HIGH</span></div><p>HV battery pack · Cell group 04</p><small>CHEVROLET SILVERADO EV · V-042</small></div><div class="signal-meta"><span>12 min ago</span><button class="diagnose-button" data-vehicle="V-042">Diagnose now <span>→</span></button></div></article>
+              <article class="signal-row"><div class="severity-dot amber"></div><div class="signal-main"><div class="signal-title"><strong>Front radar calibration</strong><span class="badge amber-badge">MEDIUM</span></div><p>ADAS sensor array · Front fascia</p><small>CADILLAC LYRIQ · V-017</small></div><div class="signal-meta"><span>46 min ago</span><button class="row-arrow" aria-label="Open signal">→</button></div></article>
+              <article class="signal-row"><div class="severity-dot amber"></div><div class="signal-main"><div class="signal-title"><strong>Tire pressure imbalance</strong><span class="badge amber-badge">MEDIUM</span></div><p>Right rear · 31 PSI detected</p><small>GMC HUMMER EV · V-008</small></div><div class="signal-meta"><span>1 hr ago</span><button class="row-arrow" aria-label="Open signal">→</button></div></article>
+            </div>
+          </div>
+
+          <aside class="panel vehicle-panel" id="vehicles">
+            <div class="panel-head"><div><p class="kicker">SELECTED VEHICLE</p><h3>V-042</h3></div><span class="status-chip"><i></i> Online</span></div>
+            <div class="vehicle-visual"><div class="scanline"></div><div class="vehicle-label">CHEVROLET<br /><strong>SILVERADO EV</strong></div><div class="vehicle-shape"><span class="wheel one"></span><span class="wheel two"></span><span class="headlight"></span></div><div class="coordinate">39.7392° N<br />104.9903° W</div></div>
+            <div class="vehicle-details"><div><span>ODOMETER</span><strong>18,642 mi</strong></div><div><span>BATTERY</span><strong class="battery-value">82% <i></i></strong></div><div><span>RANGE</span><strong>284 mi</strong></div></div>
+            <button class="full-button" id="inspectButton">Open vehicle profile <span>↗</span></button>
+          </aside>
+        </section>
+
+        <section class="service-panel panel" id="service">
+          <div class="panel-head"><div><p class="kicker">MAINTENANCE PIPELINE</p><h3>Service board</h3></div><div class="board-legend"><span><i class="dot red"></i> Needs attention</span><span><i class="dot amber"></i> Scheduled</span><span><i class="dot green"></i> Healthy</span></div></div>
+          <div class="board-grid"><div class="board-col"><div class="col-head">TRIAGE <span>01</span></div><div class="job-card high"><div class="job-top"><span class="job-id">V-042 / HV</span><span class="job-more">···</span></div><strong>Battery thermal variance</strong><p>Assigned to M. Alvarez</p><div class="job-footer"><span class="job-tag">DIAGNOSTICS</span><span>Due today</span></div></div></div><div class="board-col"><div class="col-head">SCHEDULED <span>02</span></div><div class="job-card"><div class="job-top"><span class="job-id">V-017 / ADAS</span><span class="job-more">···</span></div><strong>Radar calibration</strong><p>Service center · Denver North</p><div class="job-footer"><span class="job-tag amber-tag">CALIBRATION</span><span>12 Sep</span></div></div><div class="job-card"><div class="job-top"><span class="job-id">V-008 / TIRE</span><span class="job-more">···</span></div><strong>Pressure inspection</strong><p>Assigned to J. Miller</p><div class="job-footer"><span class="job-tag amber-tag">INSPECTION</span><span>13 Sep</span></div></div></div><div class="board-col"><div class="col-head">RESOLVED <span>04</span></div><div class="job-card resolved"><div class="job-top"><span class="job-id">V-031 / OTA</span><span>✓</span></div><strong>Infotainment update</strong><p>Completed by A. Chen</p><div class="job-footer"><span class="job-tag green-tag">OTA UPDATE</span><span>Yesterday</span></div></div></div></div>
+        </section>
+        <footer><span>VECTOR / VEHICLE INTELLIGENCE</span><span>BUILT FOR SAFER MOTION</span><span>v0.8.4 · INTERNAL CONCEPT</span></footer>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"><span class="toast-icon">✓</span><div><strong>Diagnostic session started</strong><small>Pulling live data from V-042 now.</small></div></div>
+    <script src="app.js"></script>
+  </body>
+</html>
