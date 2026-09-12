@@ -11,7 +11,7 @@ services:
     name: trace-rag-lab
     runtime: node
     plan: free
-    rootDir: ai-rag-eval-lab
+    rootDir: apps/trace-rag-lab
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health

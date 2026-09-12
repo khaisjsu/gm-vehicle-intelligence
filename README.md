@@ -41,8 +41,8 @@ The dashboard is protected by registration, salted scrypt password hashing, serv
 
 ## AI engineering project
 
-This repository also includes `ai-rag-eval-lab/`, a standalone RAG workbench demonstrating hybrid retrieval, deterministic embeddings, document ingestion, grounded answers, evaluation metrics, feedback, observability, and access-controlled knowledge. Run it independently with `cd ai-rag-eval-lab && npm start`, then open `http://localhost:4175`.
+This repository also includes `apps/trace-rag-lab/`, a standalone RAG workbench demonstrating hybrid retrieval, deterministic embeddings, document ingestion, grounded answers, evaluation metrics, feedback, observability, and access-controlled knowledge. Run it independently with `cd apps/trace-rag-lab && npm start`, then open `http://localhost:4175`.
 
 Render deploys the RAG workbench as a second web service named `trace-rag-lab`, using `ai-rag-eval-lab` as its root directory and `/api/health` for health checks. The free plan filesystem is ephemeral, so use a persistent disk or managed database before treating uploaded documents and feedback as durable production data.
 
-The main dashboard also includes `cpp/thermal_guard.cpp`, a deterministic C++17 safety boundary for battery temperature decisions. Render and CI compile it with `npm run build:native`; the dashboard calls it through `/api/native/thermal-check` and falls back to equivalent JavaScript logic if the native binary is unavailable. Use the **Safety boundary running in C++** panel to try a temperature reading in the live demo.
+The main dashboard also includes `native/thermal_guard.cpp`, a deterministic C++17 safety boundary for battery temperature decisions. Render and CI compile it with `npm run build:native`; the dashboard calls it through `/api/native/thermal-check` and falls back to equivalent JavaScript logic if the native binary is unavailable. Use the **Safety boundary running in C++** panel to try a temperature reading in the live demo.

@@ -11,6 +11,6 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test": "node --test test/*.test.js",
-    "build:native": "mkdir -p cpp && g++ -std=c++17 -O2 cpp/thermal_guard.cpp -o cpp/thermal_guard"
+    "build:native": "mkdir -p native && g++ -std=c++17 -O2 native/thermal_guard.cpp -o native/thermal_guard"
   }
 }

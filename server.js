@@ -23,7 +23,7 @@ async function handleApi(req, res, url) {
   if (req.method === "POST" && url.pathname === "/api/native/thermal-check") {
     const temperature = Number(body.temperature);
     if (!Number.isFinite(temperature) || temperature < -100 || temperature > 200) return json(res, 400, { error: "Temperature must be a valid Celsius value." });
-    const native = spawnSync(join(root, "cpp", "thermal_guard"), [String(temperature)], { encoding: "utf8" });
+    const native = spawnSync(join(root, "native", "thermal_guard"), [String(temperature)], { encoding: "utf8" });
     if (native.status === 0) return json(res, 200, { ...JSON.parse(native.stdout), implementation: "C++ native module" });
     const state = temperature > 55 ? "CRITICAL" : temperature > 45 ? "WARNING" : "NOMINAL";
     const action = state === "CRITICAL" ? "Controlled shutdown required immediately." : state === "WARNING" ? "Reduce charge current and schedule inspection." : "Continue operation and monitor telemetry.";

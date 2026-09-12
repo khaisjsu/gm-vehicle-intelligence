@@ -20,11 +20,11 @@ jobs:
           cache: npm
           cache-dependency-path: |
             package-lock.json
-            ai-rag-eval-lab/package-lock.json
+            apps/trace-rag-lab/package-lock.json
       - name: Run tests
         run: npm test
       - name: Build native C++ safety component
         run: npm run build:native
       - name: Run AI engineering project tests
-        working-directory: ai-rag-eval-lab
+        working-directory: apps/trace-rag-lab
         run: npm ci && npm test
