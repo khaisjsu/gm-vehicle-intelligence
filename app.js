@@ -86,6 +86,8 @@ document.querySelector('#thermalEvent').addEventListener('click', () => {
   simulatorAction('thermal-event').then(() => showToast('Thermal event injected', 'V-042 is now reporting a controlled battery variance.')).catch(() => showToast('Simulator error', 'Could not inject the event.'));
 });
 
+document.querySelector('#runNative').addEventListener('click', async () => { const button = document.querySelector('#runNative'); const result = document.querySelector('#nativeResult'); button.disabled = true; result.textContent = 'Calling compiled safety component…'; try { const response = await fetch('/api/native/thermal-check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ temperature: Number(document.querySelector('#nativeTemp').value) }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); result.innerHTML = '<strong class="native-' + data.state.toLowerCase() + '">' + data.state + '</strong><span>' + data.action + '</span><small>' + data.engine + ' · severity ' + data.severity + '</small>'; } catch (error) { result.textContent = error.message; } finally { button.disabled = false; } });
+
 const chatMessages = document.querySelector('#chatMessages');
 const questionInput = document.querySelector('#aiQuestion');
 function addChatMessage(kind, content, meta = '') { const node = document.createElement('div'); node.className = `chat-message ${kind}`; node.innerHTML = `<span class="chat-label">${kind === 'user' ? 'YOU' : 'VECTOR AI'}</span><p>${content}</p>${meta ? `<small>${meta}</small>` : ''}`; chatMessages.appendChild(node); chatMessages.scrollTop = chatMessages.scrollHeight; }

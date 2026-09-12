@@ -1,4 +1,5 @@
 import { createServer } from "node:http";
+import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,6 +20,15 @@ async function handleApi(req, res, url) {
   if (authResponse) return json(res, authResponse.status, authResponse.body);
   if (url.pathname === "/api/health" && req.method === "GET") return json(res, 200, { status: "ok", service: "vector", database: "sqlite", timestamp: new Date().toISOString() });
   if (!currentUser(req)) return json(res, 401, { error: "Authentication required." });
+  if (req.method === "POST" && url.pathname === "/api/native/thermal-check") {
+    const temperature = Number(body.temperature);
+    if (!Number.isFinite(temperature) || temperature < -100 || temperature > 200) return json(res, 400, { error: "Temperature must be a valid Celsius value." });
+    const native = spawnSync(join(root, "cpp", "thermal_guard"), [String(temperature)], { encoding: "utf8" });
+    if (native.status === 0) return json(res, 200, { ...JSON.parse(native.stdout), implementation: "C++ native module" });
+    const state = temperature > 55 ? "CRITICAL" : temperature > 45 ? "WARNING" : "NOMINAL";
+    const action = state === "CRITICAL" ? "Controlled shutdown required immediately." : state === "WARNING" ? "Reduce charge current and schedule inspection." : "Continue operation and monitor telemetry.";
+    return json(res, 200, { temperature_c: temperature, state, severity: state === "CRITICAL" ? 2 : state === "WARNING" ? 1 : 0, action, engine: "javascript-fallback", implementation: "Fallback boundary" });
+  }
   if (req.method === "POST" && url.pathname === "/api/ai/chat") {
     const query = String(body.query || "").trim().slice(0, 500);
     if (!query) return json(res, 400, { error: "Ask a question first." });

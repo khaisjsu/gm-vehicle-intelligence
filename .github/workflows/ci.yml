@@ -23,6 +23,8 @@ jobs:
             ai-rag-eval-lab/package-lock.json
       - name: Run tests
         run: npm test
+      - name: Build native C++ safety component
+        run: npm run build:native
       - name: Run AI engineering project tests
         working-directory: ai-rag-eval-lab
         run: npm ci && npm test
