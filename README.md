@@ -38,3 +38,7 @@ The `/api/health` endpoint can be used as a deployment health check. The local S
 GitHub Actions runs the database tests on pushes and pull requests. Render is configured to deploy after CI checks pass.
 
 The dashboard is protected by registration, salted scrypt password hashing, server-side sessions, generic login errors, logout, and login rate limiting. See `docs/AUTHENTICATION.md` for the security design.
+
+## AI engineering project
+
+This repository also includes `ai-rag-eval-lab/`, a standalone RAG workbench demonstrating hybrid retrieval, deterministic embeddings, document ingestion, grounded answers, evaluation metrics, feedback, observability, and access-controlled knowledge. Run it independently with `cd ai-rag-eval-lab && npm start`, then open `http://localhost:4175`.

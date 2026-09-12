@@ -1,0 +1,7 @@
+{
+  "name": "trace-rag-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A local RAG evaluation and observability workbench for AI engineers.",
+  "scripts": { "start": "node server.js", "test": "node --test" }
+}
