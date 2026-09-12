@@ -7,3 +7,12 @@ services:
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeployTrigger: checksPass
+  - type: web
+    name: trace-rag-lab
+    runtime: node
+    plan: free
+    rootDir: ai-rag-eval-lab
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: checksPass

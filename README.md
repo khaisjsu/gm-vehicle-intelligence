@@ -42,3 +42,5 @@ The dashboard is protected by registration, salted scrypt password hashing, serv
 ## AI engineering project
 
 This repository also includes `ai-rag-eval-lab/`, a standalone RAG workbench demonstrating hybrid retrieval, deterministic embeddings, document ingestion, grounded answers, evaluation metrics, feedback, observability, and access-controlled knowledge. Run it independently with `cd ai-rag-eval-lab && npm start`, then open `http://localhost:4175`.
+
+Render deploys the RAG workbench as a second web service named `trace-rag-lab`, using `ai-rag-eval-lab` as its root directory and `/api/health` for health checks. The free plan filesystem is ephemeral, so use a persistent disk or managed database before treating uploaded documents and feedback as durable production data.
