@@ -85,3 +85,10 @@ document.querySelector('#stopSim').addEventListener('click', () => simulatorActi
 document.querySelector('#thermalEvent').addEventListener('click', () => {
   simulatorAction('thermal-event').then(() => showToast('Thermal event injected', 'V-042 is now reporting a controlled battery variance.')).catch(() => showToast('Simulator error', 'Could not inject the event.'));
 });
+
+const chatMessages = document.querySelector('#chatMessages');
+const questionInput = document.querySelector('#aiQuestion');
+function addChatMessage(kind, content, meta = '') { const node = document.createElement('div'); node.className = `chat-message ${kind}`; node.innerHTML = `<span class="chat-label">${kind === 'user' ? 'YOU' : 'VECTOR AI'}</span><p>${content}</p>${meta ? `<small>${meta}</small>` : ''}`; chatMessages.appendChild(node); chatMessages.scrollTop = chatMessages.scrollHeight; }
+async function askVector(question) { addChatMessage('user', question); addChatMessage('pending', 'Retrieving grounded evidence…'); const pending = chatMessages.lastElementChild; try { const response = await fetch('/api/ai/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: question }) }); const data = await response.json(); pending.remove(); if (!response.ok) throw new Error(data.error || 'Assistant unavailable'); const citations = data.citations.map((source) => `<span class="chat-citation">${source.id} · ${source.title}</span>`).join(''); addChatMessage('assistant', data.answer, `CONFIDENCE ${(data.confidence * 100).toFixed(0)}% · ${data.latency_ms} MS · ${citations}`); } catch (error) { pending.remove(); addChatMessage('assistant', error.message); } }
+document.querySelector('#aiChatForm').addEventListener('submit', (event) => { event.preventDefault(); const question = questionInput.value.trim(); if (!question) return; questionInput.value = ''; askVector(question); });
+document.querySelectorAll('.suggestions button').forEach((button) => button.addEventListener('click', () => { questionInput.value = button.dataset.question; questionInput.focus(); }));

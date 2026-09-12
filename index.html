@@ -22,6 +22,7 @@
           <a class="nav-item" href="#signals"><span>⌁</span> Live signals <b class="signal-count">3</b></a>
           <a class="nav-item" href="#service"><span>◫</span> Service board <b>07</b></a>
           <a class="nav-item" href="#validation"><span>⌘</span> Delivery model <b>CI</b></a>
+          <a class="nav-item" href="#ai-assistant"><span>✦</span> AI assistant <b>RAG</b></a>
         </nav>
         <div class="sidebar-bottom">
           <div class="field-note"><span class="pulse-dot"></span><span>DATA STREAM<br /><strong>CONNECTED</strong></span></div>
@@ -39,6 +40,10 @@
           <div><p class="kicker cyan">SYSTEM STATUS / NOMINAL</p><h2>Fleet health is<br /><em>holding steady.</em></h2><p class="muted hero-copy">12 connected vehicles are reporting. One priority signal needs your attention.</p></div>
           <div class="hero-stat"><span>LAST SYNC</span><strong>08:42:16</strong><small>Pacific time · 12/12 online</small></div>
           <div class="hero-orbit"><div class="orbit-ring ring-one"></div><div class="orbit-ring ring-two"></div><div class="orbit-core">98<span>%</span><small>HEALTH</small></div></div>
+        </section>
+        <section class="ai-panel panel" id="ai-assistant">
+          <div class="panel-head"><div><p class="kicker">AI OPERATIONS COPILOT / RAG</p><h3>Ask Vector about vehicle operations</h3></div><span class="status-chip ai-status"><i></i> Grounded mode</span></div>
+          <div class="ai-layout"><div class="ai-intro"><div class="ai-orb">✦</div><p>Get a fast answer from fleet runbooks and escalation policies. Every response includes the evidence used to ground it.</p><div class="suggestions"><button data-question="What happens when battery temperature exceeds 55 C?">Battery thermal safety</button><button data-question="How quickly should priority one incidents be escalated?">Escalation timing</button><button data-question="What should happen after two failed charging attempts?">Charging failure</button></div></div><div class="chat-box"><div id="chatMessages" class="chat-messages"><div class="chat-message assistant"><span class="chat-label">VECTOR AI · READY</span><p>Ask me about battery safety, service escalation, charging, or telemetry retention.</p></div></div><form id="aiChatForm" class="chat-form"><input id="aiQuestion" autocomplete="off" placeholder="Ask an operations question…" aria-label="Ask Vector AI"><button type="submit">Send <span>↗</span></button></form></div></div>
         </section>
 
         <section class="metrics" aria-label="Fleet metrics">

@@ -4,6 +4,7 @@ import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { db, getDashboard, getSimulator, getVehicles, markThermalSignal, recordTelemetry, startDiagnostic } from "./db.js";
 import { currentUser, handleAuth, requireUser } from "./auth.js";
+import { answerQuestion } from "./ai-chat.js";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const port = Number(process.env.PORT || 4173);
@@ -18,6 +19,12 @@ async function handleApi(req, res, url) {
   if (authResponse) return json(res, authResponse.status, authResponse.body);
   if (url.pathname === "/api/health" && req.method === "GET") return json(res, 200, { status: "ok", service: "vector", database: "sqlite", timestamp: new Date().toISOString() });
   if (!currentUser(req)) return json(res, 401, { error: "Authentication required." });
+  if (req.method === "POST" && url.pathname === "/api/ai/chat") {
+    const query = String(body.query || "").trim().slice(0, 500);
+    if (!query) return json(res, 400, { error: "Ask a question first." });
+    const started = Date.now();
+    return json(res, 200, { ...answerQuestion(query), latency_ms: Date.now() - started, model: "vector-grounded-local" });
+  }
   if (req.method === "GET" && url.pathname === "/api/dashboard") return json(res, 200, getDashboard());
   if (req.method === "GET" && url.pathname === "/api/simulator") return json(res, 200, getSimulator());
   if (req.method === "GET" && url.pathname.startsWith("/api/vehicles/")) { const vehicle = getVehicles().find((item) => item.id === url.pathname.split("/").pop()); return vehicle ? json(res, 200, vehicle) : json(res, 404, { error: "Vehicle not found" }); }
